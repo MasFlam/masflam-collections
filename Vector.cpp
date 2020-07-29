@@ -15,12 +15,14 @@ public:
 	
 private:
 	
-	class VectorIterator;
+	class VectorReverseIterator;
 	
 public:
 	
-	typedef VectorIterator IteratorType;
-	typedef const VectorIterator ConstIteratorType;
+	typedef ElementType * IteratorType;
+	typedef const ElementType * ConstIteratorType;
+	typedef VectorReverseIterator ReverseIteratorType;
+	typedef const VectorReverseIterator ConstReverseIteratorType;
 	
 private:
 	
@@ -107,23 +109,39 @@ public:
 		m_buffer[i] = value;
 	}
 	
-	ElementType &get_back() noexcept
+	ElementType &get_back()
 	{
+		if(m_length == 0)
+		{
+			throw std::out_of_range("");
+		}
 		return m_buffer[m_length - 1];
 	}
 	
-	const ElementType &get_back() const noexcept
+	const ElementType &get_back() const
 	{
+		if(m_length == 0)
+		{
+			throw std::out_of_range("");
+		}
 		return m_buffer[m_length - 1];
 	}
 	
-	ElementType &get_front() noexcept
+	ElementType &get_front()
 	{
+		if(m_length == 0)
+		{
+			throw std::out_of_range("");
+		}
 		return m_buffer[0];
 	}
 	
-	const ElementType &get_front() const noexcept
+	const ElementType &get_front() const
 	{
+		if(m_length == 0)
+		{
+			throw std::out_of_range("");
+		}
 		return m_buffer[0];
 	}
 	
@@ -147,6 +165,10 @@ public:
 	
 	void remove_back()
 	{
+		if(m_length == 0)
+		{
+			throw std::out_of_range("");
+		}
 		--m_length;
 		contract_if_needed();
 	}
@@ -169,13 +191,21 @@ public:
 		contract_if_needed();
 	}
 	
-	void set_back(const ElementType &value) noexcept
+	void set_back(const ElementType &value)
 	{
+		if(m_length == 0)
+		{
+			throw std::out_of_range("");
+		}
 		m_buffer[m_length - 1] = value;
 	}
 	
-	void set_front(const ElementType &value) noexcept
+	void set_front(const ElementType &value)
 	{
+		if(m_length == 0)
+		{
+			throw std::out_of_range("");
+		}
 		m_buffer[0] = value;
 	}
 	
@@ -190,42 +220,54 @@ public:
 	
 	IteratorType begin() noexcept
 	{
-		return VectorIterator(m_buffer, 0, m_length);
+		return m_buffer;
 	}
 	
-	ConstIteratorType cbegin() noexcept
+	ConstIteratorType cbegin() const noexcept
 	{
-		return VectorIterator(m_buffer + m_length, m_length, m_length);
+		return m_buffer;
 	}
 	
-	/* UNIMPLEMENTED
-	IteratorType rbegin() noexcept
+	ReverseIteratorType rbegin() noexcept
 	{
-		return VectorReverseIterator(m_buffer, 0, m_length);
+		return VectorReverseIterator(m_buffer + m_length - 1);
 	}
-	*/
 	
-	/* UNIMPLEMENTED
-	ConstIteratorType crbegin() noexcept
+	ConstReverseIteratorType crbegin() const noexcept
 	{
-		return VectorReverseIterator(m_buffer + m_length, m_length, m_length);
+		return VectorReverseIterator(m_buffer + m_length - 1);
 	}
-	*/
+	
+	IteratorType end() noexcept
+	{
+		return m_buffer + m_length;
+	}
+	
+	ConstIteratorType cend() const noexcept
+	{
+		return m_buffer + m_length;
+	}
+	
+	ReverseIteratorType rend() noexcept
+	{
+		return VectorReverseIterator(m_buffer - 1);
+	}
+	
+	ConstReverseIteratorType crend() const noexcept
+	{
+		return VectorReverseIterator(m_buffer - 1);
+	}
 	
 private:
 	
-	
-	// FIXME unnecessary, i don't actually want to throw there...
-	class VectorIterator
+	class VectorReverseIterator
 	{
-		ElementType *m_element;
-		SizeType m_pos;
-		const SizeType &m_vector_length;
+		ElementType *m_ptr;
 		
 	public:
 		
-		VectorIterator(ElementType *ptr, SizeType pos, const SizeType &vector_length)
-			: m_element(ptr), m_pos(pos), m_vector_length(vector_length)
+		VectorReverseIterator(ElementType *ptr)
+			: m_ptr(ptr)
 		{}
 		
 		const ElementType &operator*(int) const noexcept
@@ -238,64 +280,58 @@ private:
 			return *m_element;
 		}
 		
-		bool operator==(const VectorIterator &other) const noexcept
-		{
-			return m_element == other.m_element;
-		}
+		friend bool operator==(const VectorReverseIterator &a, const VectorReverseIterator &b);
 		
-		bool operator!=(const VectorIterator &other) const noexcept
-		{
-			return m_element != other.m_element;
-		}
+		friend bool operator!=(const VectorReverseIterator &a, const VectorReverseIterator &b)
 		
-		VectorIterator operator++(int)
+		VectorReverseIterator operator++(int)
 		{
-			if(m_pos == m_vector_length - 1)
-			{
-				throw std::out_of_range("");
-			}
-			VectorIterator unincremented(m_element, m_pos, m_vector_length);
-			++m_element;
-			++m_pos;
+			VectorReverseIterator unincremented(m_ptr);
+			--m_ptr;
 			return unincremented;
 		}
 		
-		// TODO write const ref version
-		VectorIterator &operator++()
+		const VectorReverseIterator &operator++()
 		{
-			if(m_pos == m_vector_length - 1)
-			{
-				throw std::out_of_range("");
-			}
-			++m_element;
-			++m_pos;
+			--m_ptr;
 			return *this;
 		}
 		
-		VectorIterator operator--(int)
+		VectorReverseIterator &operator++()
 		{
-			if(m_pos == 0)
-			{
-				throw std::out_of_range("");
-			}
-			VectorIterator undecremented(m_element, m_pos, m_vector_length);
-			--m_element;
-			--m_pos;
+			--m_ptr;
+			return *this;
+		}
+		
+		VectorReverseIterator operator--(int)
+		{
+			VectorReverseIterator undecremented(m_ptr);
+			++m_ptr;
 			return undecremented;
 		}
 		
-		// TODO write const ref version
-		VectorIterator &operator--()
+		const VectorReverseIterator &operator--()
 		{
-			if(m_pos == m_vector_length - 1)
-			{
-				throw std::out_of_range("");
-			}
-			--m_element;
-			--m_pos;
+			++m_ptr;
+			return *this;
+		}
+		
+		VectorReverseIterator &operator--()
+		{
+			++m_ptr;
 			return *this;
 		}
 	};
 };
+
+bool operator==(const VectorReverseIterator &a, const VectorReverseIterator &b)
+{
+	return a.m_element == b.m_element;
+}
+		
+bool operator!=(const VectorReverseIterator &a, const VectorReverseIterator &b)
+{
+	return a.m_element != b.m_element;
+}
 
 #endif
