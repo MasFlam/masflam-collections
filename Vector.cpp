@@ -270,12 +270,12 @@ private:
 			: m_ptr(ptr)
 		{}
 		
-		const ElementType &operator*(int) const noexcept
+		const ElementType &operator*(int) const
 		{
 			return *m_element;
 		}
 		
-		ElementType &operator*(int) noexcept
+		ElementType &operator*(int)
 		{
 			return *m_element;
 		}
@@ -290,39 +290,39 @@ private:
 			return m_ptr != otehr.m_ptr;
 		}
 		
-		VectorReverseIterator operator++(int)
+		VectorReverseIterator operator++(int) const noexcept
 		{
 			VectorReverseIterator unincremented(m_ptr);
 			--m_ptr;
 			return unincremented;
 		}
 		
-		const VectorReverseIterator &operator++()
+		const VectorReverseIterator &operator++() const noexcept
 		{
 			--m_ptr;
 			return *this;
 		}
 		
-		VectorReverseIterator &operator++()
+		VectorReverseIterator &operator++() noexcept
 		{
 			--m_ptr;
 			return *this;
 		}
 		
-		VectorReverseIterator operator--(int)
+		VectorReverseIterator operator--(int) const noexcept
 		{
 			VectorReverseIterator undecremented(m_ptr);
 			++m_ptr;
 			return undecremented;
 		}
 		
-		const VectorReverseIterator &operator--()
+		const VectorReverseIterator &operator--() const noexcept
 		{
 			++m_ptr;
 			return *this;
 		}
 		
-		VectorReverseIterator &operator--()
+		VectorReverseIterator &operator--() noexcept
 		{
 			++m_ptr;
 			return *this;
