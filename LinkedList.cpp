@@ -182,7 +182,7 @@ private:
 			: m_chain_link(chain_link)
 		{}
 		
-		const ElementType &operator*(int) const
+		const ElementType &operator*() const
 		{
 			if(m_chain_link == nullptr)
 			{
@@ -191,7 +191,7 @@ private:
 			return m_chain_link -> value;
 		}
 		
-		ElementType &operator*(int)
+		ElementType &operator*()
 		{
 			if(m_chain_link == nullptr)
 			{
@@ -259,7 +259,7 @@ private:
 			: m_chain_link(chain_link)
 		{}
 		
-		const ElementType &operator*(int) const
+		const ElementType &operator*() const
 		{
 			if(m_chain_link == nullptr)
 			{
@@ -268,7 +268,7 @@ private:
 			return m_chain_link -> value;
 		}
 		
-		ElementType &operator*(int)
+		ElementType &operator*()
 		{
 			if(m_chain_link == nullptr)
 			{

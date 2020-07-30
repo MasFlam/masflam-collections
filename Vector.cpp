@@ -270,12 +270,12 @@ private:
 			: m_ptr(ptr)
 		{}
 		
-		const ElementType &operator*(int) const
+		const ElementType &operator*() const
 		{
 			return *m_ptr;
 		}
 		
-		ElementType &operator*(int)
+		ElementType &operator*()
 		{
 			return *m_ptr;
 		}
