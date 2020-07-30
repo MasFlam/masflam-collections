@@ -280,9 +280,15 @@ private:
 			return *m_element;
 		}
 		
-		friend bool operator==(const VectorReverseIterator &a, const VectorReverseIterator &b);
+		bool operator==(const VectorReverseIterator &other) const noexcept
+		{
+			return m_ptr == otehr.m_ptr;
+		}
 		
-		friend bool operator!=(const VectorReverseIterator &a, const VectorReverseIterator &b)
+		bool operator!=(const VectorReverseIterator &other) const noexcept
+		{
+			return m_ptr != otehr.m_ptr;
+		}
 		
 		VectorReverseIterator operator++(int)
 		{
@@ -323,15 +329,5 @@ private:
 		}
 	};
 };
-
-bool operator==(const VectorReverseIterator &a, const VectorReverseIterator &b)
-{
-	return a.m_element == b.m_element;
-}
-		
-bool operator!=(const VectorReverseIterator &a, const VectorReverseIterator &b)
-{
-	return a.m_element != b.m_element;
-}
 
 #endif

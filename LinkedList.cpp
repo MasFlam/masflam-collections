@@ -200,9 +200,15 @@ private:
 			return m_chain_link -> value;
 		}
 		
-		friend bool operator==(const LinkedListIterator &a, const LinkedListIterator &b) noexcept;
+		bool operator==(const LinkedListIterator &other) const noexcept
+		{
+			return m_chain_link == other.m_chain_link;
+		}
 		
-		friend bool operator!=(const LinkedListIterator &a, const LinkedListIterator &b) noexcept;
+		bool operator!=(const LinkedListIterator &other) const noexcept
+		{
+			return m_chain_link != other.m_chain_link;
+		}
 		
 		LinkedListIterator operator++(int)
 		{
@@ -271,9 +277,15 @@ private:
 			return m_chain_link -> value;
 		}
 		
-		friend bool operator==(const LinkedListReverseIterator &a, const LinkedListReverseIterator &b) noexcept;
+		bool operator==(const LinkedListReverseIterator &other) const noexcept
+		{
+			return m_chain_link == other.m_chain_link;
+		}
 		
-		friend bool operator!=(const LinkedListReverseIterator &a, const LinkedListReverseIterator &b) noexcept;
+		bool operator!=(const LinkedListReverseIterator &other) const noexcept
+		{
+			return m_chain_link != other.m_chain_link;
+		}
 		
 		LinkedListReverseIterator operator++(int)
 		{
@@ -314,27 +326,5 @@ private:
 		}
 	};
 };
-
-bool operator==(const LinkedListIterator &a, const LinkedListIterator &b) noexcept
-{
-	return a.m_chain_link == b.m_chain_link;
-}
-
-bool operator!=(const LinkedListIterator &a, const LinkedListIterator &b) noexcept
-{
-	return a.m_chain_link != b.m_chain_link;
-}
-
-bool operator==(const LinkedListReverseIterator &a, const LinkedListReverseIterator &b) noexcept
-{
-	return a.m_chain_link == b.m_chain_link;
-}
-
-
-
-bool operator!=(const LinkedListReverseIterator &a, const LinkedListReverseIterator &b) noexcept
-{
-	return a.m_chain_link != b.m_chain_link;
-}
 
 #endif
