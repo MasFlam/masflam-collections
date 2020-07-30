@@ -23,11 +23,14 @@ private:
 	};
 	
 	class LinkedListIterator;
+	class LinkedListReverseIterator;
 	
 public:
 	
 	typedef LinkedListIterator IteratorType;
 	typedef const LinkedListIterator ConstIteratorType;
+	typedef LinkedListReverseIterator ReverseIteratorType;
+	typedef const LinkedListReverseIterator ConstReverseIteratorType;
 	
 private:
 	
@@ -129,129 +132,209 @@ public:
 	
 	IteratorType begin() noexcept
 	{
-		return LinkedListIterator(*m_front);
+		return LinkedListIterator(m_front);
 	}
 	
 	ConstIteratorType cbegin() const noexcept
 	{
-		return LinkedListIterator(*m_front);
+		return LinkedListIterator(m_front);
 	}
 	
-	/* UNIMPLEMENTED
 	IteratorType rbegin() noexcept
 	{
-		return LinkedListReverseIterator(*m_front);
+		return LinkedListReverseIterator(m_back);
 	}
-	*/
 	
-	/* UNIMPLEMENTED
 	ConstIteratorType crbegin() const noexcept
 	{
-		return LinkedListReverseIterator(*m_front);
+		return LinkedListReverseIterator(m_back);
 	}
-	*/
 	
 	IteratorType end() noexcept
 	{
-		return LinkedListIterator(*m_back);
+		return LinkedListIterator(nullptr);
 	}
 	
 	ConstIteratorType cend() const noexcept
 	{
-		return LinkedListIterator(*m_back);
+		return LinkedListIterator(nullptr);
 	}
 	
-	/* UNIMPLEMENTED
 	IteratorType rend() noexcept
 	{
-		return LinkedListReverseIterator(*m_back);
+		return LinkedListReverseIterator(nullptr);
 	}
-	*/
 	
-	/* UNIMPLEMENTED
 	ConstIteratorType crend() const noexcept
 	{
-		return LinkedListReverseIterator(*m_back);
+		return LinkedListReverseIterator(nullptr);
 	}
-	*/
 	
 private:
 	
-	// FIXME don't throw
 	class LinkedListIterator
 	{
-		ChainLink &m_chain_link;
+		ChainLink *m_chain_link;
 		
 	public:
 		
-		LinkedListIterator(const ChainLink &chain_link)
+		LinkedListIterator(ChainLink *chain_link)
 			: m_chain_link(chain_link)
 		{}
 		
-		const ElementType &operator*(int) const noexcept
+		const ElementType &operator*(int) const
 		{
-			return m_chain_link.value;
+			if(m_chain_link == nullptr)
+			{
+				throw std::out_of_range("");
+			}
+			return m_chain_link -> value;
 		}
 		
-		ElementType &operator*(int) noexcept
+		ElementType &operator*(int)
 		{
-			return m_chain_link.value;
+			if(m_chain_link == nullptr)
+			{
+				throw std::out_of_range("");
+			}
+			return m_chain_link -> value;
 		}
 		
-		bool operator==(const LinkedListIterator &other) const noexcept
-		{
-			return &m_chain_link == &other.m_chain_link;
-		}
+		friend bool operator==(const LinkedListIterator &a, const LinkedListIterator &b) noexcept;
 		
-		bool operator!=(const LinkedListIterator &other) const noexcept
-		{
-			return &m_chain_link != &other.m_chain_link;
-		}
+		friend bool operator!=(const LinkedListIterator &a, const LinkedListIterator &b) noexcept;
 		
 		LinkedListIterator operator++(int)
 		{
-			if(m_chain_link -> next == nullptr)
-			{
-				throw std::out_of_range("");
-			}
 			LinkedListIterator unincremented(m_chain_link);
-			m_chain_link = *(m_chain_link -> next);
+			m_chain_link = m_chain_link -> next;
 			return unincremented;
 		}
 		
-		// TODO write const ref version
+		const LinkedListIterator &operator++() const
+		{
+			m_chain_link = m_chain_link -> next;
+			return *this;
+		}
+		
 		LinkedListIterator &operator++()
 		{
-			if(m_chain_link -> next == nullptr)
-			{
-				throw std::out_of_range("");
-			}
-			m_chain_link = *(m_chain_link -> next);
+			m_chain_link = m_chain_link -> next;
 			return *this;
 		}
 		
 		LinkedListIterator operator--(int)
 		{
-			if(m_chain_link -> prev == nullptr)
-			{
-				throw std::out_of_range("");
-			}
 			LinkedListIterator undecremented(m_chain_link);
-			m_chain_link = *(m_chain_link -> prev);
+			m_chain_link = m_chain_link -> prev;
 			return undecremented;
 		}
 		
-		// TODO write const ref version
+		const LinkedListIterator &operator--() const
+		{
+			m_chain_link = m_chain_link -> prev;
+			return *this;
+		}
+		
 		LinkedListIterator &operator--()
 		{
-			if(m_chain_link -> prev == nullptr)
+			m_chain_link = m_chain_link -> prev;
+			return *this;
+		}
+	};
+	
+	class LinkedListReverseIterator
+	{
+		ChainLink *m_chain_link;
+		
+	public:
+		
+		LinkedListReverseIterator(ChainLink *chain_link)
+			: m_chain_link(chain_link)
+		{}
+		
+		const ElementType &operator*(int) const
+		{
+			if(m_chain_link == nullptr)
 			{
 				throw std::out_of_range("");
 			}
-			m_chain_link = *(m_chain_link -> prev);
+			return m_chain_link -> value;
+		}
+		
+		ElementType &operator*(int)
+		{
+			if(m_chain_link == nullptr)
+			{
+				throw std::out_of_range("");
+			}
+			return m_chain_link -> value;
+		}
+		
+		friend bool operator==(const LinkedListReverseIterator &a, const LinkedListReverseIterator &b) noexcept;
+		
+		friend bool operator!=(const LinkedListReverseIterator &a, const LinkedListReverseIterator &b) noexcept;
+		
+		LinkedListReverseIterator operator++(int)
+		{
+			LinkedListReverseIterator unincremented(m_chain_link);
+			m_chain_link = m_chain_link -> prev;
+			return unincremented;
+		}
+		
+		LinkedListReverseIterator &operator++()
+		{
+			m_chain_link = m_chain_link -> prev;
+			return *this;
+		}
+		
+		const LinkedListReverseIterator &operator++() const
+		{
+			m_chain_link = m_chain_link -> prev;
+			return *this;
+		}
+		
+		LinkedListReverseIterator operator--(int)
+		{
+			LinkedListReverseIterator undecremented(m_chain_link);
+			m_chain_link = m_chain_link -> next;
+			return undecremented;
+		}
+		
+		LinkedListReverseIterator &operator--()
+		{
+			m_chain_link = m_chain_link -> next;
+			return *this;
+		}
+		
+		const LinkedListReverseIterator &operator--() const
+		{
+			m_chain_link = m_chain_link -> next;
 			return *this;
 		}
 	};
 };
+
+bool operator==(const LinkedListIterator &a, const LinkedListIterator &b) noexcept
+{
+	return a.m_chain_link == b.m_chain_link;
+}
+
+bool operator!=(const LinkedListIterator &a, const LinkedListIterator &b) noexcept
+{
+	return a.m_chain_link != b.m_chain_link;
+}
+
+bool operator==(const LinkedListReverseIterator &a, const LinkedListReverseIterator &b) noexcept
+{
+	return a.m_chain_link == b.m_chain_link;
+}
+
+
+
+bool operator!=(const LinkedListReverseIterator &a, const LinkedListReverseIterator &b) noexcept
+{
+	return a.m_chain_link != b.m_chain_link;
+}
 
 #endif
