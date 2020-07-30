@@ -282,12 +282,12 @@ private:
 		
 		bool operator==(const VectorReverseIterator &other) const noexcept
 		{
-			return m_ptr == otehr.m_ptr;
+			return m_ptr == other.m_ptr;
 		}
 		
 		bool operator!=(const VectorReverseIterator &other) const noexcept
 		{
-			return m_ptr != otehr.m_ptr;
+			return m_ptr != other.m_ptr;
 		}
 		
 		VectorReverseIterator operator++(int) const noexcept
