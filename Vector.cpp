@@ -272,12 +272,12 @@ private:
 		
 		const ElementType &operator*(int) const
 		{
-			return *m_element;
+			return *m_ptr;
 		}
 		
 		ElementType &operator*(int)
 		{
-			return *m_element;
+			return *m_ptr;
 		}
 		
 		bool operator==(const VectorReverseIterator &other) const noexcept
