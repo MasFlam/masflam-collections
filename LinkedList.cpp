@@ -18,7 +18,7 @@ private:
 	
 	struct ChainLink
 	{
-		ElementType &value;
+		ElementType value;
 		ChainLink *next, *prev;
 	};
 	
@@ -61,15 +61,17 @@ public:
 	{
 		if(m_length == 0)
 		{
-			ChainLink *chain_link = new ChainLink{ .value = value, .next = nullptr, .prev = nullptr};
+			ChainLink *chain_link = new ChainLink{ .value = value, .next = nullptr, .prev = nullptr };
 			m_front = chain_link;
 			m_back = chain_link;
+			++m_length;
 		}
 		else
 		{
-			ChainLink *chain_link = new ChainLink{ .value = value, .next = nullptr, .prev = m_back};
+			ChainLink *chain_link = new ChainLink{ .value = value, .next = nullptr, .prev = m_back };
 			m_back -> next = chain_link;
 			m_back = chain_link;
+			++m_length;
 		}
 	}
 	
@@ -77,15 +79,17 @@ public:
 	{
 		if(m_length == 0)
 		{
-			ChainLink *chain_link = new ChainLink{ .value = value, .next = nullptr, .prev = nullptr};
+			ChainLink *chain_link = new ChainLink{ .value = value, .next = nullptr, .prev = nullptr };
 			m_front = chain_link;
 			m_back = chain_link;
+			++m_length;
 		}
 		else
 		{
-			ChainLink *chain_link = new ChainLink{ .value = value, .next = m_front, .prev = nullptr};
-			m_front -> next = chain_link;
+			ChainLink *chain_link = new ChainLink{ .value = value, .next = m_front, .prev = nullptr };
+			m_front -> prev = chain_link;
 			m_front = chain_link;
+			++m_length;
 		}
 	}
 	
@@ -113,6 +117,7 @@ public:
 			ChainLink *old_back = m_back;
 			m_back = m_back -> prev;
 			delete old_back;
+			--m_length;
 		}
 	}
 	
@@ -127,6 +132,7 @@ public:
 			ChainLink *old_front = m_front;
 			m_front = m_front -> next;
 			delete old_front;
+			--m_length;
 		}
 	}
 	

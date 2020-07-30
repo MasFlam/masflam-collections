@@ -86,7 +86,7 @@ public:
 	void add_back(const ElementType &value)
 	{
 		expand_if_needed();
-		m_buffer[++m_length] = value;
+		m_buffer[m_length++] = value;
 	}
 	
 	void add_front(const ElementType &value)
@@ -102,11 +102,12 @@ public:
 		}
 		expand_if_needed();
 		SizeType i;
-		for(i = m_length; i > pos; )
+		for(i = m_length; i > pos; --i)
 		{
-			m_buffer[i] = m_buffer[--i];
+			m_buffer[i] = m_buffer[i - 1];
 		}
 		m_buffer[i] = value;
+		++m_length;
 	}
 	
 	ElementType &get_back()
