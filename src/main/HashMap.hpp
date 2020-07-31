@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <utility>
 
-#include "LinkedList.cpp"
-#include "Vector.cpp"
+#include "LinkedList.hpp"
+#include "Vector.hpp"
 
 template<class Key, class Value, class HashFunc>
 class HashMap
@@ -39,7 +39,7 @@ public:
 	
 private:
 	
-	void rehash()
+	//void rehash()
 };
 
 #endif
