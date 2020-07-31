@@ -43,7 +43,7 @@ echo_test-compile:
 	@echo "]]]]    Compiling tests"
 
 $(TEST_TARGET_DIR)/%.test.out: $(TEST_SRC_DIR)/%.test.cpp | $(TEST_TARGET_DIR)
-	$(CC) $(CC_FLAGS) $(CC_TEST_FLAGS) $< $(wildcard $(MAIN_TARGET_DIR)/*.o) -I $(MAIN_SRC_DIR) -I $(MAIN_TARGET_DIR) -o $@
+	$(CC) $(CC_FLAGS) $(CC_TEST_FLAGS) $< $(wildcard $(MAIN_TARGET_DIR)/*.o) -I $(MAIN_TARGET_DIR) -I $(MAIN_SRC_DIR) -o $@
 
 $(TEST_TARGET_DIR):
 	@echo "]]  Creating directory $@"
