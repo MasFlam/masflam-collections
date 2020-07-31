@@ -18,12 +18,14 @@ TEST_SRCS := $(wildcard $(TEST_SRC_DIR)/*.test.cpp)
 TEST_OBJS := $(patsubst $(TEST_SRC_DIR)/%.test.cpp,$(TEST_TARGET_DIR)/%.test.out,$(TEST_SRCS))
 
 
-.PHONY: all compile test-compile test-run clean
+.PHONY: all compile echo_compile test-compile echo_test-compile test-run clean
 
 all: clean compile test-compile test-run
 
 
-compile: $(MAIN_OBJS_O) $(MAIN_OBJS_GCH)
+compile: echo_compile $(MAIN_OBJS_O) $(MAIN_OBJS_GCH)
+echo_compile:
+	@echo "]]]]    Compiling library sources"
 
 $(MAIN_TARGET_DIR)/%.o: $(MAIN_SRC_DIR)/%.cpp | $(MAIN_TARGET_DIR)
 	$(CC) $(CC_FLAGS) $(CC_MAIN_FLAGS) -c $< -o $@
@@ -32,26 +34,31 @@ $(MAIN_TARGET_DIR)/%.gch: $(MAIN_SRC_DIR)/%.hpp | $(MAIN_TARGET_DIR)
 	$(CC) $(CC_FLAGS) $(CC_MAIN_FLAGS) -c $< -o $@
 
 $(MAIN_TARGET_DIR):
-	mkdir -p $@
+	@echo "]]  Creating directory $@"
+	@mkdir -p $@
 
 
-test-compile: $(TEST_OBJS)
+test-compile: echo_test-compile $(TEST_OBJS)
+echo_test-compile:
+	@echo "]]]]    Compiling tests"
 
 $(TEST_TARGET_DIR)/%.test.out: $(TEST_SRC_DIR)/%.test.cpp | $(TEST_TARGET_DIR)
 	$(CC) $(CC_FLAGS) $(CC_TEST_FLAGS) $< $(wildcard $(MAIN_TARGET_DIR)/*.gch) $(wildcard $(MAIN_TARGET_DIR)/*.o) -I$(MAIN_SRC_DIR) -o $@
 
 $(TEST_TARGET_DIR):
-	mkdir -p $@
+	@echo "]]  Creating directory $@"
+	@mkdir -p $@
 
 
 test-run:
-	@echo "]] Running tests"
-	$(foreach TEST_OBJ,$(TEST_OBJS),\
-		@echo "] Running test $(notdir $(basename $(basename $(TEST_OBJ))))";\
+	@echo "]]]]    Running tests"
+	@$(foreach TEST_OBJ,$(TEST_OBJS),\
+		@echo "]]  Running test $(notdir $(basename $(basename $(TEST_OBJ))))";\
 		./$(TEST_OBJ);\
 	)
 
 
 clean:
+	@echo "]]]]    Cleaning target directory"
 	@rm -rf $(MAIN_TARGET_DIR) $(TEST_TARGET_DIR)
-	@echo "]] Directories $(MAIN_TARGET_DIR) $(TEST_TARGET_DIR) have been removed"
+	@echo "]]  Directories $(MAIN_TARGET_DIR) $(TEST_TARGET_DIR) have been removed"
