@@ -38,7 +38,7 @@ $(MAIN_TARGET_DIR):
 test-compile: $(TEST_OBJS)
 
 $(TEST_TARGET_DIR)/%.test.out: $(TEST_SRC_DIR)/%.test.cpp | $(TEST_TARGET_DIR)
-	$(CC) $(CC_FLAGS) $(CC_TEST_FLAGS) $< $(wildcard $(MAIN_TARGET_DIR)/*.gch) $(wildcard $(MAIN_TARGET_DIR)/*.o) -I$(MAIN_SRCS_DIR) -o $@
+	$(CC) $(CC_FLAGS) $(CC_TEST_FLAGS) $< $(wildcard $(MAIN_TARGET_DIR)/*.gch) $(wildcard $(MAIN_TARGET_DIR)/*.o) -I$(MAIN_SRC_DIR) -o $@
 
 $(TEST_TARGET_DIR):
 	mkdir -p $@
