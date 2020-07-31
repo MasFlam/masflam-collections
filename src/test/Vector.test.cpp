@@ -1,5 +1,5 @@
 #include "assert.hpp"
-#include "Vector.cpp"
+#include "Vector.hpp"
 
 void get_when_empty()
 {

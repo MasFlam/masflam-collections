@@ -13,7 +13,7 @@ TEST_TARGET_DIR := target/test
 MAIN_SRCS_CPP := $(wildcard $(MAIN_SRC_DIR)/*.cpp)
 MAIN_SRCS_HPP := $(wildcard $(MAIN_SRC_DIR)/*.hpp)
 MAIN_OBJS_O := $(patsubst $(MAIN_SRC_DIR)/%.cpp,$(MAIN_TARGET_DIR)/%.o,$(MAIN_SRCS_CPP))
-MAIN_OBJC_GCH := $(patsubst $(MAIN_SRC_DIR)/%.hpp,$(MAIN_TARGET_DIR)/%.gch,$(MAIN_SRCS_HPP))
+MAIN_OBJS_GCH := $(patsubst $(MAIN_SRC_DIR)/%.hpp,$(MAIN_TARGET_DIR)/%.gch,$(MAIN_SRCS_HPP))
 TEST_SRCS := $(wildcard $(TEST_SRC_DIR)/*.test.cpp)
 TEST_OBJS := $(patsubst $(TEST_SRC_DIR)/%.test.cpp,$(TEST_TARGET_DIR)/%.test.out,$(TEST_SRCS))
 
