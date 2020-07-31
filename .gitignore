@@ -1,2 +1,6 @@
 # Binaries
 target/**
+
+# IDE/Editor dirs
+**/.vscode
+**/.idea
