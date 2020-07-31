@@ -83,6 +83,16 @@ public:
 		m_buffer = new_buffer;
 	}
 	
+	SizeType count() const noexcept
+	{
+		return m_length;
+	}
+	
+	void clear()
+	{
+		resize(0);
+	}
+	
 	void add_back(const ElementType &value)
 	{
 		expand_if_needed();
