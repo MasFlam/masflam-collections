@@ -1,12 +1,14 @@
 #include <cstdio>
 #include <cstdlib>
 
+bool exit_on_assertion_fail = false;
+
 void assert(bool expr, const char *expr_str, const char *fail_message, const char *location_info, bool expected)
 {
 	if(expr != expected)
 	{
 		fprintf(stderr, "Assertion `%s` failed. %s. %s\n", expr_str, fail_message, location_info);
-		exit(1);
+		if(exit_on_assertion_fail) exit(1);
 	}
 }
 
@@ -15,7 +17,7 @@ void assert(bool expr, const char *expr_str, const char *location_info, bool exp
 	if(expr != expected)
 	{
 		fprintf(stderr, "Assertion `%s` failed. %s\n", expr_str, location_info);
-		exit(1);
+		if(exit_on_assertion_fail) exit(1);
 	}
 }
 
@@ -32,7 +34,7 @@ void assert(bool expr, const char *expr_str, const char *location_info, bool exp
 	{ \
 		_stmt; \
 		fprintf(stderr, "Assertion failed: `" #_stmt "` didnt throw " #_exception ". file: " __FILE__ ", line: " INT_TO_STR(__LINE__)); \
-		exit(1); \
+		if(exit_on_assertion_fail) exit(1); \
 	} \
 	catch(_exception) {}
 
@@ -44,5 +46,5 @@ void assert(bool expr, const char *expr_str, const char *location_info, bool exp
 	catch(...) \
 	{ \
 		fprintf(stderr, "Assertion failed: `" #_stmt "` threw an exception. file: " __FILE__ ", line: " INT_TO_STR(__LINE__)); \
-		exit(1); \
+		if(exit_on_assertion_fail) exit(1); \
 	}
