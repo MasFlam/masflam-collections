@@ -1,5 +1,5 @@
-#ifndef HashMap_CPP
-#define HashMap_CPP
+#ifndef HashMap_HPP
+#define HashMap_HPP
 
 #include <cstddef>
 #include <utility>

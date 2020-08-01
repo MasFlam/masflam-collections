@@ -1,5 +1,5 @@
-#ifndef Vector_CPP
-#define Vector_CPP
+#ifndef Vector_HPP
+#define Vector_HPP
 
 #include <cstddef>
 #include <stdexcept>

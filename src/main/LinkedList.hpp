@@ -1,5 +1,5 @@
-#ifndef LinkedList_CPP
-#define LinkedList_CPP
+#ifndef LinkedList_HPP
+#define LinkedList_HPP
 
 #include <cstddef>
 #include <initializer_list>
