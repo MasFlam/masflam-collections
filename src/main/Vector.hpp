@@ -88,6 +88,11 @@ public:
 		return m_length;
 	}
 	
+	SizeType capacity() const noexcept
+	{
+		return m_capacity;
+	}
+	
 	void clear()
 	{
 		resize(0);
@@ -97,6 +102,7 @@ public:
 	{
 		expand_if_needed();
 		m_buffer[m_length++] = value;
+		contract_if_needed();
 	}
 	
 	void add_front(const ElementType &value)
@@ -118,6 +124,7 @@ public:
 		}
 		m_buffer[i] = value;
 		++m_length;
+		contract_if_needed();
 	}
 	
 	ElementType &get_back()
@@ -182,6 +189,7 @@ public:
 		}
 		--m_length;
 		contract_if_needed();
+		expand_if_needed();
 	}
 	
 	void remove_front()
@@ -195,11 +203,13 @@ public:
 		{
 			throw std::out_of_range("");
 		}
-		for(SizeType i = m_length; i-- > 0; )
+		--m_length;
+		for(SizeType i = pos; i < m_length; ++i)
 		{
-			m_buffer[i] = m_buffer[i - 1];
+			m_buffer[i] = m_buffer[i + 1];
 		}
 		contract_if_needed();
+		expand_if_needed();
 	}
 	
 	void set_back(const ElementType &value)
