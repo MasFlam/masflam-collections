@@ -16,13 +16,14 @@ public:
 private:
 	
 	class VectorReverseIterator;
+	class VectorConstReverseIterator;
 	
 public:
 	
 	typedef ElementType * IteratorType;
 	typedef const ElementType * ConstIteratorType;
 	typedef VectorReverseIterator ReverseIteratorType;
-	typedef const VectorReverseIterator ConstReverseIteratorType;
+	typedef VectorConstReverseIterator ConstReverseIteratorType;
 	
 private:
 	
@@ -256,7 +257,7 @@ public:
 	
 	ConstReverseIteratorType crbegin() const noexcept
 	{
-		return VectorReverseIterator(m_buffer + m_length - 1);
+		return VectorConstReverseIterator(m_buffer + m_length - 1);
 	}
 	
 	IteratorType end() noexcept
@@ -276,7 +277,7 @@ public:
 	
 	ConstReverseIteratorType crend() const noexcept
 	{
-		return VectorReverseIterator(m_buffer - 1);
+		return VectorConstReverseIterator(m_buffer - 1);
 	}
 	
 private:
@@ -311,39 +312,79 @@ private:
 			return m_ptr != other.m_ptr;
 		}
 		
-		VectorReverseIterator operator++(int) const noexcept
+		VectorReverseIterator operator++(int) noexcept
 		{
 			VectorReverseIterator unincremented(m_ptr);
 			--m_ptr;
 			return unincremented;
 		}
 		
-		const VectorReverseIterator &operator++() const noexcept
+		const VectorReverseIterator &operator++() noexcept
 		{
 			--m_ptr;
 			return *this;
 		}
 		
-		VectorReverseIterator &operator++() noexcept
-		{
-			--m_ptr;
-			return *this;
-		}
-		
-		VectorReverseIterator operator--(int) const noexcept
+		VectorReverseIterator operator--(int) noexcept
 		{
 			VectorReverseIterator undecremented(m_ptr);
 			++m_ptr;
 			return undecremented;
 		}
 		
-		const VectorReverseIterator &operator--() const noexcept
+		const VectorReverseIterator &operator--() noexcept
 		{
 			++m_ptr;
 			return *this;
 		}
+	};
+	
+	class VectorConstReverseIterator
+	{
+		ElementType *m_ptr;
 		
-		VectorReverseIterator &operator--() noexcept
+	public:
+		
+		VectorConstReverseIterator(ElementType *ptr)
+			: m_ptr(ptr)
+		{}
+		
+		const ElementType &operator*() const
+		{
+			return *m_ptr;
+		}
+		
+		bool operator==(const VectorConstReverseIterator &other) const noexcept
+		{
+			return m_ptr == other.m_ptr;
+		}
+		
+		bool operator!=(const VectorConstReverseIterator &other) const noexcept
+		{
+			return m_ptr != other.m_ptr;
+		}
+		
+		VectorConstReverseIterator operator++(int) noexcept
+		{
+			VectorConstReverseIterator unincremented(m_ptr);
+			--m_ptr;
+			return unincremented;
+		}
+		
+		const VectorConstReverseIterator &operator++() noexcept
+		{
+			--m_ptr;
+			return *this;
+		}
+		
+		VectorConstReverseIterator operator--(int) noexcept
+		{
+			VectorConstReverseIterator undecremented(m_ptr);
+			++m_ptr;
+			return undecremented;
+		}
+		
+		const VectorConstReverseIterator &operator--() noexcept
 		{
 			++m_ptr;
 			return *this;

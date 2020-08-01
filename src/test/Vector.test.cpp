@@ -1,6 +1,8 @@
 #include "assert.hpp"
 #include "Vector.hpp"
 
+#include <string>
+
 void get_when_empty()
 {
 	Vector<int> vec;
@@ -241,6 +243,147 @@ void clear()
 	}
 }
 
+void range_based_for_loop()
+{
+	Vector<int> vec{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	
+	std::string straccum;
+	
+	for(Vector<int>::ElementType elem : vec)
+	{
+		straccum += std::to_string(elem);
+	}
+	
+	ASSERT(straccum == "0123456789")
+}
+
+void iterators()
+{
+	Vector<int> vec{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	
+	
+	// ITERATORS FROM ...begin() METHODS
+	
+	{
+		Vector<int>::IteratorType iter = vec.begin();
+		ASSERT_NOTHROW(
+			ASSERT(*iter == 0)
+			ASSERT(*(++iter) == 1)
+			ASSERT(*(iter++) == 1)
+			ASSERT(*iter == 2)
+			ASSERT(*(--iter) == 1)
+			ASSERT(*(iter--) == 1)
+			ASSERT(*iter == 0)
+			0 /* noop without a semicolon, as ASSERT_NOTHROW adds an extra semicolon at the end */
+		)
+	}
+	
+	{
+		Vector<int>::ConstIteratorType iter = vec.cbegin();
+		ASSERT_NOTHROW(
+			ASSERT(*iter == 0)
+			ASSERT(*(++iter) == 1)
+			ASSERT(*(iter++) == 1)
+			ASSERT(*iter == 2)
+			ASSERT(*(--iter) == 1)
+			ASSERT(*(iter--) == 1)
+			ASSERT(*iter == 0)
+			0 /* noop without a semicolon, as ASSERT_NOTHROW adds an extra semicolon at the end */
+		)
+	}
+	
+	{
+		Vector<int>::ReverseIteratorType iter = vec.rbegin();
+		ASSERT_NOTHROW(
+			ASSERT(*iter == 9)
+			ASSERT(*(++iter) == 8)
+			ASSERT(*(iter++) == 8)
+			ASSERT(*iter == 7)
+			ASSERT(*(--iter) == 8)
+			ASSERT(*(iter--) == 8)
+			ASSERT(*iter == 9)
+			0 /* noop without a semicolon, as ASSERT_NOTHROW adds an extra semicolon at the end */
+		)
+	}
+	
+	{
+		Vector<int>::ConstReverseIteratorType iter = vec.crbegin();
+		ASSERT_NOTHROW(
+			ASSERT(*iter == 9)
+			ASSERT(*(++iter) == 8)
+			ASSERT(*(iter++) == 8)
+			ASSERT(*iter == 7)
+			ASSERT(*(--iter) == 8)
+			ASSERT(*(iter--) == 8)
+			ASSERT(*iter == 9)
+			0 /* noop without a semicolon, as ASSERT_NOTHROW adds an extra semicolon at the end */
+		)
+	}
+	
+	
+	// ITERATORS FROM ...end() METHODS
+	
+	{
+		Vector<int>::IteratorType iter = vec.end();
+		ASSERT_NOTHROW(
+			--iter;
+			ASSERT(*iter == 9)
+			ASSERT(*(--iter) == 8)
+			ASSERT(*(iter--) == 8)
+			ASSERT(*iter == 7)
+			ASSERT(*(++iter) == 8)
+			ASSERT(*(iter++) == 8)
+			ASSERT(*iter == 9)
+			0 /* noop without a semicolon, as ASSERT_NOTHROW adds an extra semicolon at the end */
+		)
+	}
+	
+	{
+		Vector<int>::ConstIteratorType iter = vec.cend();
+		ASSERT_NOTHROW(
+			--iter;
+			ASSERT(*iter == 9)
+			ASSERT(*(--iter) == 8)
+			ASSERT(*(iter--) == 8)
+			ASSERT(*iter == 7)
+			ASSERT(*(++iter) == 8)
+			ASSERT(*(iter++) == 8)
+			ASSERT(*iter == 9)
+			0 /* noop without a semicolon, as ASSERT_NOTHROW adds an extra semicolon at the end */
+		)
+	}
+	
+	{
+		Vector<int>::ReverseIteratorType iter = vec.rend();
+		ASSERT_NOTHROW(
+			--iter;
+			ASSERT(*iter == 0)
+			ASSERT(*(--iter) == 1)
+			ASSERT(*(iter--) == 1)
+			ASSERT(*iter == 2)
+			ASSERT(*(++iter) == 1)
+			ASSERT(*(iter++) == 1)
+			ASSERT(*iter == 0)
+			0 /* noop without a semicolon, as ASSERT_NOTHROW adds an extra semicolon at the end */
+		)
+	}
+	
+	{
+		Vector<int>::ConstReverseIteratorType iter = vec.crend();
+		ASSERT_NOTHROW(
+			--iter;
+			ASSERT(*iter == 0)
+			ASSERT(*(--iter) == 1)
+			ASSERT(*(iter--) == 1)
+			ASSERT(*iter == 2)
+			ASSERT(*(++iter) == 1)
+			ASSERT(*(iter++) == 1)
+			ASSERT(*iter == 0)
+			0 /* noop without a semicolon, as ASSERT_NOTHROW adds an extra semicolon at the end */
+		)
+	}
+}
+
 int main()
 {
 	get_when_empty();
@@ -252,4 +395,6 @@ int main()
 	remove_after_count_after_initializer_list();
 	resize_after_initializer_list();
 	clear();
+	range_based_for_loop();
+	iterators();
 }
