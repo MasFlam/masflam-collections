@@ -2,7 +2,7 @@
 CC := g++
 CC_FLAGS := -std=c++2a
 CC_MAIN_FLAGS := -g
-CC_TEST_FLAGS :=
+CC_TEST_FLAGS := -g
 
 
 MAIN_SRC_DIR := src/main
